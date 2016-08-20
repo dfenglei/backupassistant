@@ -74,6 +74,9 @@ def user(username):
 def edit_profile():
     form = EditProfileForm()
     if form.validate_on_submit():
+        #deal = Deal(dealnum=form.zhifubaodeal.data,
+        #            customer=current_user._get_current_object())
+        #db.session.add(deal)
         current_user.name = form.name.data
         current_user.location = form.location.data
         current_user.zhifubao = form.zhifubaodeal.data
@@ -101,6 +104,10 @@ def edit_profile_admin(id):
         user.role = Role.query.get(form.role.data)
         user.name = form.name.data
         user.location = form.location.data
+        user.zhifubao = form.zhifubaodeal.data
+        #user.member_since = form.eos.data
+        user.eos = form.eos.data
+        user.accounttype = form.qs.data
         user.about_me = form.about_me.data
         db.session.add(user)
         flash('The profile has been updated.')
@@ -111,6 +118,12 @@ def edit_profile_admin(id):
     form.role.data = user.role_id
     form.name.data = user.name
     form.location.data = user.location
+    form.zhifubaodeal.data = user.zhifubao
+    #form.eos.data = user.member_since
+    form.eos.data = user.eos
+    form.zjzh.data = user.accountname
+    form.mm.data  = user.accountpassword_hash
+    form.qs.data  = user.accounttype 
     form.about_me.data = user.about_me
     return render_template('edit_profile.html', form=form, user=user)
 

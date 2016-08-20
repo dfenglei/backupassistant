@@ -68,6 +68,9 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), unique=True, index=True)
     accountname = db.Column(db.String(64), unique=True, index=True)
     accountpassword_hash = db.Column(db.String(128))
+    accounttype = db.Column(db.Integer)
+    #zhifubao = db.relationship('Deal', backref='costomer', lazy='dynamic')
+    #zhifubao = db.Column(db.Integer,db.ForeignKey('roles.id'))
     zhifubao = db.Column(db.String(64))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     password_hash = db.Column(db.String(128))
@@ -77,6 +80,7 @@ class User(UserMixin, db.Model):
     about_me = db.Column(db.Text())
     member_since = db.Column(db.DateTime(), default=datetime.utcnow)
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
+    eos = db.Column(db.DateTime(), default=datetime.utcnow)
     avatar_hash = db.Column(db.String(32))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     followed = db.relationship('Follow',
@@ -306,6 +310,51 @@ login_manager.anonymous_user = AnonymousUser
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+class Deal(db.Model):
+    __tablename__ = 'deals'
+    id = db.Column(db.Integer, primary_key=True)
+    dealnum = db.Column(db.String(64), unique=True)
+    default = db.Column(db.Boolean, default=False, index=True)
+    deal_since = db.Column(db.DateTime(), default=datetime.utcnow)
+    deal_type = db.Column(db.Integer) #7, 30 or 365
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    customer_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    #comments = db.relationship('Comment', backref='post', lazy='dynamic')
+    #users = db.relationship('User', backref='deal', lazy='dynamic')
+
+    @staticmethod
+    def generate_fake(count=100):
+        from random import seed, randint
+        import forgery_py
+
+        seed()
+        user_count = User.query.count()
+        for i in range(count):
+            u = User.query.offset(randint(0, user_count - 1)).first()
+            p = Post(body=forgery_py.lorem_ipsum.sentences(randint(1, 5)),
+                     timestamp=forgery_py.date.date(True),
+                     customer=u)
+            db.session.add(p)
+            db.session.commit()
+
+    def __repr__(self):
+        return '<dealnum %r>' % self.dealnum
+
+
+    def to_json(self):
+        json_post = {
+            'timestamp': self.timestamp,
+            'dealno': self.dealnum,
+            'default': self.default,
+            'deal_since': self.deal_since,
+            'deal_type': self.deal_type,
+            'author': url_for('api.get_user', id=self.customer_id,
+                              _external=True),
+            #'comment_count': self.comments.count()
+        }
+        return json_post
+
+
 
 class Post(db.Model):
     __tablename__ = 'posts'
@@ -404,3 +453,5 @@ class Comment(db.Model):
 
 
 db.event.listen(Comment.body, 'set', Comment.on_changed_body)
+
+

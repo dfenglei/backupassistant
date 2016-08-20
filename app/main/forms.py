@@ -1,5 +1,5 @@
 from flask.ext.wtf import Form
-from wtforms import StringField, TextAreaField, BooleanField, SelectField,\
+from wtforms import StringField,DateTimeField,IntegerField, TextAreaField, BooleanField, SelectField,\
     SubmitField
 from wtforms.validators import Required, Length, Email, Regexp
 from wtforms import ValidationError
@@ -19,6 +19,12 @@ class EditProfileForm(Form):
     about_me = TextAreaField('About me')
     submit = SubmitField('Submit')
 
+#class EditDealForm(Form):
+#    name = StringField('Real name', validators=[Length(0, 64)])
+#    location = StringField('Location', validators=[Length(0, 64)])
+#    zhifubaodeal = StringField('Order', validators=[Length(0, 64)])
+#    about_me = TextAreaField('About me')
+#    submit = SubmitField('Submit')
 
 class EditProfileAdminForm(Form):
     email = StringField('Email', validators=[Required(), Length(1, 64),
@@ -31,7 +37,12 @@ class EditProfileAdminForm(Form):
     role = SelectField('Role', coerce=int)
     name = StringField('Real name', validators=[Length(0, 64)])
     location = StringField('Location', validators=[Length(0, 64)])
+    zhifubaodeal = StringField('Order', validators=[Length(0, 64)])
     about_me = TextAreaField('About me')
+    eos= DateTimeField('EOD')
+    zjzh = StringField('zjzh', validators=[Length(0, 64)])
+    mm = StringField('mm', validators=[Length(0, 64)])
+    qs= IntegerField('qs')
     submit = SubmitField('Submit')
 
     def __init__(self, user, *args, **kwargs):
