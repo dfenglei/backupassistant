@@ -1,4 +1,6 @@
 venv
+migrations
+__pycache__
 .env
 *.pyc
 *.sqlite

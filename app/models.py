@@ -8,6 +8,7 @@ from flask import current_app, request, url_for
 from flask_login import UserMixin, AnonymousUserMixin
 from app.exceptions import ValidationError
 from . import db, login_manager
+import base64
 
 
 class Permission:
@@ -140,11 +141,12 @@ class User(UserMixin, db.Model):
     @accountpassword.setter
     def accountpassword(self, password):
         #self.accountpassword_hash = generate_password_hash(password)
-        self.accountpassword_hash = password
+        self.accountpassword_hash = base64.b64encode(password)
+        #self.accountpassword_hash = password
     def verify_tradepassword(self, password):
         #return check_password_hash(self.password_hash, password)
         #return self.password_hash == password
-        if self.accountpassword_hash == password:
+        if self.accountpassword_hash == base64.b64encode(password):
           return True
         return False
 
