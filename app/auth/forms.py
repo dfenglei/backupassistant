@@ -13,30 +13,30 @@ sys.setdefaultencoding('utf8')
 class LoginForm(Form):
     email = StringField('Email', validators=[Required(), Length(1, 64),
                                              Email()])
-    password = PasswordField('Password', validators=[Required()])
-    remember_me = BooleanField('Keep me logged in')
-    submit = SubmitField('Log In')
+    password = PasswordField('密码', validators=[Required()])
+    remember_me = BooleanField('保持登录')
+    submit = SubmitField('登录')
 
 
 class RegistrationForm(Form):
     email = StringField('Email', validators=[Required(), Length(1, 64),
                                            Email()])
-    username = StringField('Username', validators=[
+    username = StringField('用户名', validators=[
         Required(), Length(1, 64), Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0,
                                           'Usernames must have only letters, '
                                           'numbers, dots or underscores')])
-    password = PasswordField('Password', validators=[
+    password = PasswordField('密码', validators=[
         Required(), EqualTo('password2', message='Passwords must match.')])
-    password2 = PasswordField('Confirm password', validators=[Required()])
+    password2 = PasswordField('确认密码', validators=[Required()])
     #accountname = StringField('Username', validators=[
-    accountname = StringField('accountname', validators=[
+    accountname = StringField('资金账户', validators=[
         Required(), Length(1, 64), Regexp('^[A-Za-z0-9]*$', 0,
                                           'Accountnames must have only letters, '
                                           'numbers')])
-    accountpassword = PasswordField('accountPassword', validators=[
+    accountpassword = PasswordField('交易密码', validators=[
         Required(), EqualTo('accountpassword2', message='Passwords must match.')])
-    accountpassword2 = PasswordField('Confirm password', validators=[Required()])
-    zhifubao = StringField('zhifubao_trade_No', validators=[
+    accountpassword2 = PasswordField('确认交易密码', validators=[Required()])
+    zhifubao = StringField('支付宝订单编号', validators=[
         Required(), Length(1, 64), Regexp('^[0-9]*$', 0,
                                           'zhifubaotradeno must have only ' 'numbers')])
     submit = SubmitField('注册')
