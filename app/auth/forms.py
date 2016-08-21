@@ -37,8 +37,8 @@ class RegistrationForm(Form):
         Required(), EqualTo('accountpassword2', message='Passwords must match.')])
     accountpassword2 = PasswordField('确认交易密码', validators=[Required()])
     zhifubao = StringField('支付宝订单编号', validators=[
-        Required(), Length(1, 64), Regexp('^[0-9]*$', 0,
-                                          'zhifubaotradeno must have only ' 'numbers')])
+        Required(), Length(1, 64), Regexp('^201[0-9]*$', 0,
+                                          '确认你支付宝订单编号没有错误 ' 'numbers')])
     submit = SubmitField('注册')
 
     def validate_email(self, field):
