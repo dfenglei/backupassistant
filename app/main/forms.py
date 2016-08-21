@@ -1,3 +1,4 @@
+#coding:utf-8
 from flask.ext.wtf import Form
 from wtforms import StringField,DateTimeField,IntegerField, TextAreaField, BooleanField, SelectField,\
     SubmitField
@@ -5,6 +6,10 @@ from wtforms.validators import Required, Length, Email, Regexp
 from wtforms import ValidationError
 from flask_pagedown.fields import PageDownField
 from ..models import Role, User
+import sys
+
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 
 class NameForm(Form):
@@ -13,11 +18,11 @@ class NameForm(Form):
 
 
 class EditProfileForm(Form):
-    name = StringField('Real name', validators=[Length(0, 64)])
-    location = StringField('Location', validators=[Length(0, 64)])
-    zhifubaodeal = StringField('Order', validators=[Length(0, 64)])
-    about_me = TextAreaField('About me')
-    submit = SubmitField('Submit')
+    name = StringField('网名', validators=[Length(0, 64)])
+    location = StringField('券商', validators=[Length(0, 64)])
+    zhifubaodeal = StringField('支付宝订单编号', validators=[Length(0, 64)])
+    about_me = TextAreaField('自我介绍')
+    submit = SubmitField('提交')
 
 #class EditDealForm(Form):
 #    name = StringField('Real name', validators=[Length(0, 64)])
@@ -63,10 +68,10 @@ class EditProfileAdminForm(Form):
 
 
 class PostForm(Form):
-    body = PageDownField("What's on your mind?", validators=[Required()])
-    submit = SubmitField('Submit')
+    body = PageDownField("欢迎使用ECHO助理.", validators=[Required()])
+    submit = SubmitField('提交')
 
 
 class CommentForm(Form):
-    body = StringField('Enter your comment', validators=[Required()])
-    submit = SubmitField('Submit')
+    body = StringField('输入评论', validators=[Required()])
+    submit = SubmitField('提交')
