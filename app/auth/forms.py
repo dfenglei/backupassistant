@@ -34,7 +34,7 @@ class RegistrationForm(Form):
     zhifubao = StringField('zhifubao_trade_No', validators=[
         Required(), Length(1, 64), Regexp('^[0-9]*$', 0,
                                           'zhifubaotradeno must have only ' 'numbers')])
-    submit = SubmitField('Register')
+    submit = SubmitField('注册')
 
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first():
