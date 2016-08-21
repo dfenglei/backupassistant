@@ -4,6 +4,10 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import Required, Length, Email, Regexp, EqualTo
 from wtforms import ValidationError
 from ..models import User
+import sys
+
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 
 class LoginForm(Form):
