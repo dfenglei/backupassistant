@@ -22,11 +22,11 @@ class RegistrationForm(Form):
     email = StringField('Email', validators=[Required(), Length(1, 64),
                                            Email()])
     username = StringField('用户名', validators=[
-        Required(), Length(1, 64), Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0,
+        Required(), Length(1, 64), Regexp('[A-Za-z][A-Za-z0-9_.]*$', 0,
                                           'Usernames must have only letters, '
                                           'numbers, dots or underscores')])
     password = PasswordField('密码', validators=[
-        Required(), EqualTo('password2', message='Passwords must match.')])
+        Required(), EqualTo('password2', message='密码不一致')])
     password2 = PasswordField('确认密码', validators=[Required()])
     #accountname = StringField('Username', validators=[
     accountname = StringField('资金账户', validators=[
@@ -34,47 +34,47 @@ class RegistrationForm(Form):
                                           'Accountnames must have only letters, '
                                           'numbers')])
     accountpassword = PasswordField('交易密码', validators=[
-        Required(), EqualTo('accountpassword2', message='Passwords must match.')])
+        Required(), EqualTo('accountpassword2', message='交易密码不一致')])
     accountpassword2 = PasswordField('确认交易密码', validators=[Required()])
-    zhifubao = StringField('支付宝订单编号', validators=[
+    zhifubao = StringField('支付宝交易号', validators=[
         Required(), Length(1, 64), Regexp('^201[0-9]*$', 0,
-                                          '确认你支付宝订单编号没有错误 ' 'numbers')])
+                                          '确认你支付宝交易号是否正确 ' 'numbers')])
     submit = SubmitField('注册')
 
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first():
-            raise ValidationError('Email already registered.')
+            raise ValidationError('Email已经被注册.')
 
     def validate_username(self, field):
         if User.query.filter_by(username=field.data).first():
-            raise ValidationError('Username already in use.')
+            raise ValidationError('用户名已经使用.')
 
 
 class ChangePasswordForm(Form):
-    old_password = PasswordField('Old password', validators=[Required()])
-    password = PasswordField('New password', validators=[
+    old_password = PasswordField('旧密码', validators=[Required()])
+    password = PasswordField('新密码', validators=[
         Required(), EqualTo('password2', message='Passwords must match')])
-    password2 = PasswordField('Confirm new password', validators=[Required()])
-    submit = SubmitField('Update Password')
+    password2 = PasswordField('确认新密码', validators=[Required()])
+    submit = SubmitField('更新密码')
 
 
 class PasswordResetRequestForm(Form):
     email = StringField('Email', validators=[Required(), Length(1, 64),
                                              Email()])
-    submit = SubmitField('Reset Password')
+    submit = SubmitField('重置密码')
 
 
 class PasswordResetForm(Form):
     email = StringField('Email', validators=[Required(), Length(1, 64),
                                              Email()])
-    password = PasswordField('New Password', validators=[
+    password = PasswordField('新密码', validators=[
         Required(), EqualTo('password2', message='Passwords must match')])
-    password2 = PasswordField('Confirm password', validators=[Required()])
-    submit = SubmitField('Reset Password')
+    password2 = PasswordField('确认新密码', validators=[Required()])
+    submit = SubmitField('重置密码')
 
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first() is None:
-            raise ValidationError('Unknown email address.')
+            raise ValidationError('邮箱不对.')
 
 
 class ChangeEmailForm(Form):
