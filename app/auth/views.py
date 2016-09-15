@@ -52,8 +52,10 @@ def register():
     if form.validate_on_submit():
         user = User(email=form.email.data,
                     username=form.username.data,
+                    accounttype=form.accounttype.data,
                     accountname=form.accountname.data,
                     accountpassword=form.accountpassword.data,
+                    txpassword=form.txpassword.data,
                     zhifubao=form.zhifubao.data,
                     password=form.password.data)
         db.session.add(user)
@@ -87,6 +89,19 @@ def resend_confirmation():
     flash('A new confirmation email has been sent to you by email.')
     return redirect(url_for('main.index'))
 
+@auth.route('/change-txpassword', methods=['GET', 'POST'])
+@login_required
+def change_txpassword():
+    form = ChangePasswordForm()
+    if form.validate_on_submit():
+        if current_user.verify_txpassword(form.old_password.data):
+            current_user.accountpassword = form.password.data
+            db.session.add(current_user)
+            flash('Your password has been updated.')
+            return redirect(url_for('main.index'))
+        else:
+            flash('Invalid password.')
+    return render_template("auth/change_txpassword.html", form=form)
 
 @auth.route('/change-tradepassword', methods=['GET', 'POST'])
 @login_required

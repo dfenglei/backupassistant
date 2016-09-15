@@ -68,6 +68,8 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), unique=True, index=True)
     accountname = db.Column(db.String(64), unique=True, index=True)
     accountpassword_hash = db.Column(db.String(128))
+    txpassword_hash = db.Column(db.String(128))
+    #accounttype = db.Column(db.Integer)
     accounttype = db.Column(db.Integer)
     #zhifubao = db.relationship('Deal', backref='costomer', lazy='dynamic')
     #zhifubao = db.Column(db.Integer,db.ForeignKey('roles.id'))
@@ -107,6 +109,7 @@ class User(UserMixin, db.Model):
                      username=forgery_py.internet.user_name(True),
                      accountname=forgery_py.internet.user_name(True),
                      accountpassword=forgery_py.lorem_ipsum.word(),
+                     txpassword=forgery_py.lorem_ipsum.word(),
                      password=forgery_py.lorem_ipsum.word(),
                      confirmed=True,
                      name=forgery_py.name.full_name(),
@@ -139,17 +142,23 @@ class User(UserMixin, db.Model):
                 self.email.encode('utf-8')).hexdigest()
         self.followed.append(Follow(followed=self))
     @property
+    def txpassword(self):
+        raise AttributeError('tx password is not a readable attribute')
+    @txpassword.setter
+    def txpassword(self, password):
+        self.txpassword_hash = base64.b64encode(password)
+    def verify_txpassword(self, password):
+        if self.txpassword_hash == base64.b64encode(password):
+          return True
+        return False
+
+    @property
     def accountpassword(self):
         raise AttributeError('account password is not a readable attribute')
-
     @accountpassword.setter
     def accountpassword(self, password):
-        #self.accountpassword_hash = generate_password_hash(password)
         self.accountpassword_hash = base64.b64encode(password)
-        #self.accountpassword_hash = password
     def verify_tradepassword(self, password):
-        #return check_password_hash(self.password_hash, password)
-        #return self.password_hash == password
         if self.accountpassword_hash == base64.b64encode(password):
           return True
         return False

@@ -123,6 +123,7 @@ def edit_profile_admin(id):
     form.eos.data = user.eos
     form.zjzh.data = user.accountname
     form.mm.data  = user.accountpassword_hash
+    form.txmm.data  = user.txpassword_hash
     form.qs.data  = user.accounttype 
     form.about_me.data = user.about_me
     return render_template('edit_profile.html', form=form, user=user)
