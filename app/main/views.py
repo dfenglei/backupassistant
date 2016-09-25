@@ -80,6 +80,8 @@ def edit_profile():
         current_user.name = form.name.data
         current_user.location = form.location.data
         current_user.zhifubao = form.zhifubaodeal.data
+        current_user.dxhour = form.dxhour.data
+        current_user.dxmin = form.dxmin.data
         current_user.about_me = form.about_me.data
         db.session.add(current_user)
         flash('Your profile has been updated.')
@@ -87,6 +89,8 @@ def edit_profile():
     form.name.data = current_user.name
     form.location.data = current_user.location
     form.zhifubaodeal.data = current_user.zhifubao
+    form.dxhour.data = current_user.dxhour
+    form.dxmin.data = current_user.dxmin
     form.about_me.data = current_user.about_me
     return render_template('edit_profile.html', form=form)
 
@@ -108,6 +112,8 @@ def edit_profile_admin(id):
         #user.member_since = form.eos.data
         user.eos = form.eos.data
         user.accounttype = form.qs.data
+        user.dxhour = form.dxhour.data
+        user.dxmin = form.dxmin.data
         user.about_me = form.about_me.data
         db.session.add(user)
         flash('The profile has been updated.')
@@ -123,8 +129,11 @@ def edit_profile_admin(id):
     form.eos.data = user.eos
     form.zjzh.data = user.accountname
     form.mm.data  = user.accountpassword_hash
+    form.mm.data  = user.accountpassword_hash
     form.txmm.data  = user.txpassword_hash
     form.qs.data  = user.accounttype 
+    form.dxhour.data  = user.dxhour
+    form.dxmin.data  = user.dxmin
     form.about_me.data = user.about_me
     return render_template('edit_profile.html', form=form, user=user)
 

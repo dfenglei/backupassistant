@@ -38,8 +38,8 @@ class RegistrationForm(Form):
         Required(), EqualTo('accountpassword2', message='交易密码不一致')])
     accountpassword2 = PasswordField('确认交易密码', validators=[Required()])
     txpassword = PasswordField('华泰通讯密码', validators=[
-        Required(), EqualTo('txpassword2', message='通讯密码不一致')])
-    txpassword2 = PasswordField('确认通讯密码', validators=[Required()])
+         EqualTo('txpassword2', message='通讯密码不一致')])
+    txpassword2 = PasswordField('确认通讯密码' )
     zhifubao = StringField('支付宝交易号', validators=[
         Required(), Length(1, 64), Regexp('^201[0-9]*$', 0,
                                           '确认你支付宝交易号是否正确 ' 'numbers')])
