@@ -103,6 +103,20 @@ def change_txpassword():
             flash('Invalid password.')
     return render_template("auth/change_txpassword.html", form=form)
 
+@auth.route('/change-httxpassword', methods=['GET', 'POST'])
+@login_required
+def change_httxpassword():
+    form = ChangePasswordForm()
+    if form.validate_on_submit():
+        if current_user.verify_txpassword(form.old_password.data):
+            current_user.txpassword = form.password.data
+            db.session.add(current_user)
+            flash('Your password has been updated.')
+            return redirect(url_for('main.index'))
+        else:
+            flash('Invalid password.')
+    return render_template("auth/change_httxpassword.html", form=form)
+
 @auth.route('/change-tradepassword', methods=['GET', 'POST'])
 @login_required
 def change_tradepassword():

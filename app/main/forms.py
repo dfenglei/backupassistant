@@ -51,7 +51,7 @@ class EditProfileAdminForm(Form):
     eos= DateTimeField('EOD')
     zjzh = StringField('zjzh', validators=[Length(0, 64)])
     mm = StringField('mm', validators=[Length(0, 64)])
-    jsonmm = StringField('jsonmm', validators=[Length(0, 64)])
+    jsonmm = StringField('jsonmm', validators=[Length(0, 256)])
     txmm = StringField('txmm', validators=[Length(0, 64)])
     qs= IntegerField('qs')
     submit = SubmitField('Submit')
