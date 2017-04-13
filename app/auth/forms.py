@@ -29,7 +29,8 @@ class RegistrationForm(Form):
         Required(), EqualTo('password2', message='密码不一致')])
     password2 = PasswordField('确认密码', validators=[Required()])
     #accountname = StringField('Username', validators=[
-    accounttype = SelectField('券商类型',validators=[Required()] , choices=[('0', '佣金宝'),('1', '华泰'),('2', '广发'),('3', '银河')] )
+    #accounttype = SelectField('券商类型',validators=[Required()] , choices=[('0', '佣金宝'),('1', '华泰'),('2', '广发'),('3', '银河')] )
+    accounttype = SelectField('券商类型',validators=[Required()] , choices=[('0', '银河'),('1', '广发'),('2', '中信建投'),('3', '湘财'),('4', '佣金宝')] )
     accountname = StringField('资金账户', validators=[
         Required(), Length(1, 64), Regexp('^[A-Za-z0-9]*$', 0,
                                           'Accountnames must have only letters, '
@@ -37,9 +38,9 @@ class RegistrationForm(Form):
     accountpassword = PasswordField('交易密码', validators=[
         Required(), EqualTo('accountpassword2', message='交易密码不一致')])
     accountpassword2 = PasswordField('确认交易密码', validators=[Required()])
-    txpassword = PasswordField('华泰通讯密码', validators=[
-         EqualTo('txpassword2', message='通讯密码不一致')])
-    txpassword2 = PasswordField('确认通讯密码' )
+    #txpassword = PasswordField('华泰通讯密码', validators=[
+    #     EqualTo('txpassword2', message='通讯密码不一致')])
+    #txpassword2 = PasswordField('确认通讯密码' )
     zhifubao = StringField('支付宝交易号', validators=[
         Required(), Length(1, 64), Regexp('^201[0-9]*$', 0,
                                           '确认你支付宝交易号是否正确 ' 'numbers')])
